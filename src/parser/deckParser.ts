@@ -12,8 +12,8 @@ export class DeckParser{
       return DeckParser.getHeader(binaryData);
   }
   static makePretty(deck:DeckDataRaw):DeckData{
-    const income = misc.incomeTypes[deck.income] || "ERROR"
-    const div = divisions.divisionsById[deck.division].name || "ERROR";
+    const income = misc.incomeTypes[deck.income] || "ERROR("+deck.income+")"
+    const div = divisions.divisionsById[deck.division].name || "ERROR("+deck.division+")"
     const ret:DeckData = {
       raw: deck,
       income: income,
@@ -22,10 +22,10 @@ export class DeckParser{
     }
     for(const unit of deck.units){
       //console.log(JSON.stringify(units.unitsById))
-      const u = units.unitsById[unit.id]?.name || "ERROR"
+      const u = units.unitsById[unit.id]?.name || "ERROR("+unit.id+")"
       let t = "None"
       if(unit.transportid != -1)
-        t = units.unitsById[unit.transportid]?.name || "ERROR"
+        t = units.unitsById[unit.transportid]?.name || "ERROR("+unit.xp+")"
       const punit:Unit = {
         xp:unit.xp,
         phase:unit.phase,
@@ -98,7 +98,7 @@ phase: number;
 count: number;
 }
 
-declare type DeckData = {
+export declare type DeckData = {
   income: string;
   division: string;
   units: Unit[];

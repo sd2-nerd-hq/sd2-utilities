@@ -1,9 +1,9 @@
 {
   "name": "sd2-utilities",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Utilities for SD2",
   "main": "lib/main.js",
-  "types":"lib",
+  "types": "lib",
   "scripts": {
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
     "build": "tsc -p .",

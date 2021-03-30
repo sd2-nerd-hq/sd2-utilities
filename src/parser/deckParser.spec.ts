@@ -9,7 +9,5 @@ describe('Deck Paser',()=>{
         expect(data.raw.division).to.equal(431);
         expect(data.raw.cardCount).to.equal(34);
         expect(data.raw.income).to.equal(1);
-
-        console.log(JSON.stringify(data))
     })
 })
