@@ -1,4 +1,3 @@
-
 import { units, divisions, misc } from 'sd2-data';
 export class DeckParser{
 
@@ -9,7 +8,9 @@ export class DeckParser{
       base64data.forEach((x)=>{
         binaryData = binaryData.concat(x.toString(2).padStart(8,"0"));
       })
-      return DeckParser.getHeader(binaryData);
+      const deck = DeckParser.getHeader(binaryData);
+      deck.code = code;
+      return deck;
   }
   static makePretty(deck:DeckDataRaw):DeckData{
     const income = misc.incomeTypes[deck.income] || "ERROR("+deck.income+")"
@@ -75,7 +76,7 @@ export class DeckParser{
         units.push(unit);
       }
 
-      const result:DeckDataRaw = {division: header[2], cardCount: header[3], income: header[4], units: units};
+      const result:DeckDataRaw = {code:"", division: header[2], cardCount: header[3], income: header[4], units: units};
   
       return result;
   }
@@ -88,6 +89,7 @@ income: number;
 division: number;
 cardCount: number;
 units: UnitRaw[];
+code: string;
 }
 
 declare type UnitRaw = {
