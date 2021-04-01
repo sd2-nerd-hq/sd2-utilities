@@ -4,6 +4,14 @@ import * as fs from 'fs'
 import { expect } from 'chai';
 
 describe('Game Paser',()=>{
+    it('Test load RoguishTiger vs LuckySky',()=>{
+        const buffer = fs.readFileSync("test/RoguishTiger_v_LucySky_G2.rpl3");
+        const data = GameParser.parseRaw(buffer);
+
+        expect(data.players[0].name).is.equal('lucysky')
+        expect(data.players[1].name).is.equal('#AUS RoguishTiger')
+        
+    }),
     it('Test load AS vs VonPaulus_G2',()=>{
         const buffer = fs.readFileSync("test/AS_vs._VonPaulus_G2.rpl3");
         const data = GameParser.parseRaw(buffer);

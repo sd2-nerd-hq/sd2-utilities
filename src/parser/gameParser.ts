@@ -5,7 +5,12 @@ import { DeckData, DeckParser } from './deckParser'
 
 export class GameParser {
     static parseRaw(gameData:Buffer):RawGameData{
-        const data = gameData.slice(0x30).toString().split("star")[0];
+        //figure out junk length:
+        //const junk = gameData.toString().split("{\"game\":")[0].length
+        const junk = gameData.indexOf("{")
+        console.log(junk)
+        const data = gameData.slice((junk)).toString().split("star")[0].trimStart()
+        console.log(data)
         const startData = JSON.parse(data);
         const endData = JSON.parse('{"result":' + gameData.toString().split(`{"result":`)[1]);
         
