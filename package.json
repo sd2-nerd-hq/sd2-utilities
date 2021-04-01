@@ -1,6 +1,6 @@
 {
   "name": "sd2-utilities",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Utilities for SD2",
   "main": "lib/main.js",
   "types": "lib",

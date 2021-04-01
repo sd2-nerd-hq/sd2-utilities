@@ -22,7 +22,6 @@ export class DeckParser{
       units: []
     }
     for(const unit of deck.units){
-      //console.log(JSON.stringify(units.unitsById))
       const u = units.unitsById[unit.id]?.name || "ERROR("+unit.id+")"
       let t = "None"
       if(unit.transportid != -1)
