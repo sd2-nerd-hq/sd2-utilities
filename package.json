@@ -33,6 +33,6 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "sd2-data": "^0.3.3"
+    "sd2-data": "^0.4.0"
   }
 }
