@@ -35,5 +35,5 @@
   "dependencies": {
     "sd2-data": "^0.4.0"
   },
-    "files": ["/src", "/lib"]
+    "files": ["src/*", "lib/*"]
 }
