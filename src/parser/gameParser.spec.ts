@@ -12,6 +12,14 @@ describe('Game Paser',()=>{
         expect(data.players[1].name).is.equal('#AUS RoguishTiger')
         
     }),
+    it('Test load Nilla vs Presor',()=>{
+      const buffer = fs.readFileSync("test/Nilla_vs_Presor_Issue.rpl3");
+      const data = GameParser.parseRaw(buffer);
+
+      expect(data.players[0].name).is.equal('#US Nilla')
+      expect(data.players[1].name).is.equal('#US MC Prestor John')
+      
+  }),
     it('Test load AS vs VonPaulus_G2',()=>{
         const buffer = fs.readFileSync("test/AS_vs._VonPaulus_G2.rpl3");
         const data = GameParser.parseRaw(buffer);
@@ -119,6 +127,8 @@ describe('Game Paser',()=>{
 
           expect(data.players[0].deck?.division).is.equal("4 Munte")
           expect(data.players[1].deck?.division).is.equal("1. Skijäger")
+
+          fs.writeFileSync("output.txt",JSON.stringify(data))
 
 
           

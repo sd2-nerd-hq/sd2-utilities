@@ -7,7 +7,7 @@ export class GameParser {
     static parseRaw(gameData:Buffer):RawGameData{
         //figure out junk length:
         //const junk = gameData.toString().split("{\"game\":")[0].length
-        const junk = gameData.indexOf("{")
+        const junk = gameData.indexOf("{\"game\":")
         console.log(junk)
         const data = gameData.slice((junk)).toString().split("star")[0].trimStart()
         console.log(data)
