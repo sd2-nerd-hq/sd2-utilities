@@ -33,7 +33,10 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "sd2-data": "^0.5.1"
+    "sd2-data": "^0.5.2"
   },
-    "files": ["src/*", "lib/*"]
+  "files": [
+    "src/*",
+    "lib/*"
+  ]
 }
