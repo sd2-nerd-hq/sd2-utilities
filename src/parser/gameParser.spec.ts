@@ -12,6 +12,14 @@ describe('Game Paser',()=>{
         expect(data.players[1].name).is.equal('#AUS RoguishTiger')
         
     }),
+    it('test replay_2021-05-03_19-30-44.rpl3',()=>{
+      const buffer = fs.readFileSync("test/replay_2021-05-03_19-30-44.rpl3");
+      const data = GameParser.parseRaw(buffer);
+
+      expect(data.players[0].deck?.division).is.equal('lucysky')
+      expect(data.players[1].deck?.division).is.equal('#AUS RoguishTiger')
+      
+    }),
     it('Test load Nilla vs Presor',()=>{
       const buffer = fs.readFileSync("test/Nilla_vs_Presor_Issue.rpl3");
       const data = GameParser.parseRaw(buffer);
