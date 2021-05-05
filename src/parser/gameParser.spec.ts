@@ -16,8 +16,8 @@ describe('Game Paser',()=>{
       const buffer = fs.readFileSync("test/replay_2021-05-03_19-30-44.rpl3");
       const data = GameParser.parseRaw(buffer);
 
-      expect(data.players[0].deck?.division).is.equal('lucysky')
-      expect(data.players[1].deck?.division).is.equal('#AUS RoguishTiger')
+      expect(data.players[0].deck?.division).is.equal('52. Sicherungs-Division z.b.V')
+      expect(data.players[1].deck?.division).is.equal('Panzerverband Strachwitz')
       
     }),
     it('Test load Nilla vs Presor',()=>{

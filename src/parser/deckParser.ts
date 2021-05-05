@@ -10,7 +10,6 @@ export class DeckParser{
       })
       const deck = DeckParser.getHeader(binaryData);
       deck.code = code;
-      console.log(deck)
       return deck;
   }
   static makePretty(deck:DeckDataRaw):DeckData{
