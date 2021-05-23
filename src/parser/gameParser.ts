@@ -8,7 +8,14 @@ export class GameParser {
         //figure out junk length:
         //const junk = gameData.toString().split("{\"game\":")[0].length
         const junk = gameData.indexOf("{\"game\":")
-        const data = gameData.slice((junk)).toString().split("star")[0].trimStart()
+        //ok... so in theory noone will name themselves "ingamePlayerId... so lets regex that line out and find the end of the line on it."
+        const regex = /("ingamePlayerId":\d+})star/g
+        const d = gameData.slice((junk)).toString()
+        const matches = regex.exec(d)
+        let data = "Something Went Wrong"
+        if(matches)
+            data = d.split(matches[1])[0].trimStart() + matches[1]
+        console.log(data)
         const startData = JSON.parse(data);
         const endData = JSON.parse('{"result":' + gameData.toString().split(`{"result":`)[1]);
         
