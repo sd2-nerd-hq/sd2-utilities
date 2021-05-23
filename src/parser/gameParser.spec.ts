@@ -13,7 +13,7 @@ describe('Game Paser',()=>{
         
     }),
     it('Broken1v1s',()=>{
-      let buffer = fs.readFileSync("test/Broken_1v1_02.rpl3");
+      let buffer = fs.readFileSync("test/Broken_1v1_03.rpl3");
       let data = GameParser.parseRaw(buffer);
       expect(data).is.not.null
   }),
