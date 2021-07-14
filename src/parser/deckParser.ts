@@ -14,7 +14,7 @@ export class DeckParser{
   }
   static makePretty(deck:DeckDataRaw):DeckData{
     const income = misc.incomeTypes[deck.income] || "ERROR("+deck.income+")"
-    const div = divisions.divisionsById[deck.division].name || "ERROR("+deck.division+")"
+    const div = divisions.divisionsById[deck.division] ? divisions.divisionsById[deck.division].name : "ERROR("+deck.division+")"
     const ret:DeckData = {
       raw: deck,
       income: income,

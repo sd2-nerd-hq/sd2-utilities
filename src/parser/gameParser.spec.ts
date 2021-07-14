@@ -12,6 +12,19 @@ describe('Game Paser',()=>{
         expect(data.players[1].name).is.equal('#AUS RoguishTiger')
         
     }),
+    it('Broken1v1s',()=>{
+      let buffer = fs.readFileSync("test/Broken_1v1_03.rpl3");
+      let data = GameParser.parseRaw(buffer);
+      expect(data).is.not.null
+  }),
+    it('test replay_2021-05-03_19-30-44.rpl3',()=>{
+      const buffer = fs.readFileSync("test/replay_2021-05-03_19-30-44.rpl3");
+      const data = GameParser.parseRaw(buffer);
+
+      expect(data.players[0].deck?.division).is.equal('52. Sicherungs-Division z.b.V')
+      expect(data.players[1].deck?.division).is.equal('Panzerverband Strachwitz')
+      
+    }),
     it('Test load Nilla vs Presor',()=>{
       const buffer = fs.readFileSync("test/Nilla_vs_Presor_Issue.rpl3");
       const data = GameParser.parseRaw(buffer);
