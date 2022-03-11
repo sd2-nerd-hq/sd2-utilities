@@ -1,0 +1,1 @@
+declare module "sd2-data";
