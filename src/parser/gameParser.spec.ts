@@ -1,4 +1,3 @@
-import { DeckParser } from './deckParser';
 import { GameParser } from './gameParser';
 import * as fs from 'fs'
 import { expect } from 'chai';
@@ -13,8 +12,8 @@ describe('Game Paser',()=>{
         
     }),
     it('Broken1v1s',()=>{
-      let buffer = fs.readFileSync("test/Broken_1v1_03.rpl3");
-      let data = GameParser.parseRaw(buffer);
+      const buffer = fs.readFileSync("test/Broken_1v1_03.rpl3");
+      const data = GameParser.parseRaw(buffer);
       expect(data).is.not.null
   }),
     it('test replay_2021-05-03_19-30-44.rpl3',()=>{
