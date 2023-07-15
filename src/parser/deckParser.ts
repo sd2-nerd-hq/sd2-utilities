@@ -1,4 +1,4 @@
-import { units, divisions, misc } from 'sd2-data';
+import {units, divisions, misc, DivisionStruct} from 'sd2-data';
 export class DeckParser{
 
   static parseRaw(code:string):DeckDataRaw{
@@ -15,7 +15,7 @@ export class DeckParser{
   static makePretty(deck:DeckDataRaw):DeckData{
     const income = misc.incomeTypes[deck.income] || "ERROR("+deck.income+")"
     const div = divisions.divisionsById[deck.division] ? divisions.divisionsById[deck.division].name : "ERROR("+deck.division+")"
-    const isWARNO = divisions.divisionsNato.includes(deck.division) || divisions.divisionsPact.includes(deck.division)
+    const isWARNO = divisions.divisionsNato.some((div: {id: number}) => div.id === deck.division) || divisions.divisionsPact.some((div: {id: number}) => div.id === deck.division)
 
     const ret:DeckData = {
       raw: deck,
