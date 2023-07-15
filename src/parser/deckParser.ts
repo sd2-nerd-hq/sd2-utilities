@@ -15,8 +15,11 @@ export class DeckParser{
   static makePretty(deck:DeckDataRaw):DeckData{
     const income = misc.incomeTypes[deck.income] || "ERROR("+deck.income+")"
     const div = divisions.divisionsById[deck.division] ? divisions.divisionsById[deck.division].name : "ERROR("+deck.division+")"
+    const isWARNO = divisions.divisionsNato.includes(deck.division) || divisions.divisionsPact.includes(deck.division)
+
     const ret:DeckData = {
       raw: deck,
+      franchise: isWARNO ? "WARNO" : "SD2",
       income: income,
       division: div,
       units: []
@@ -102,6 +105,7 @@ count: number;
 export declare type DeckData = {
   income: string;
   division: string;
+  franchise: "WARNO" | "SD2";
   units: Unit[];
   raw: DeckDataRaw;
 }
