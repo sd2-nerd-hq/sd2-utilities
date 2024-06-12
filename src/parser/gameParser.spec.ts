@@ -1,11 +1,15 @@
-import { GameParser } from './gameParser';
+import { GameParser, RawGameData } from './gameParser';
 import * as fs from 'fs'
 import { expect } from 'chai';
 
 describe('Game Paser',()=>{
     it('Test load RoguishTiger vs LuckySky',()=>{
         const buffer = fs.readFileSync("test/RoguishTiger_v_LucySky_G2.rpl3");
-        const data = GameParser.parseRaw(buffer);
+        let data = GameParser.parseRaw(buffer);
+
+        expect(data).not.null;
+
+        data = data as RawGameData;
 
         expect(data.players[0].name).is.equal('lucysky')
         expect(data.players[1].name).is.equal('#AUS RoguishTiger')
@@ -20,16 +24,16 @@ describe('Game Paser',()=>{
       const buffer = fs.readFileSync("test/replay_2021-05-03_19-30-44.rpl3");
       const data = GameParser.parseRaw(buffer);
 
-      expect(data.players[0].deck?.division).is.equal('52. Sicherungs-Division z.b.V')
-      expect(data.players[1].deck?.division).is.equal('Panzerverband Strachwitz')
+      expect(data!.players[0].deck?.division).is.equal('52. Sicherungs-Division z.b.V')
+      expect(data!.players[1].deck?.division).is.equal('Panzerverband Strachwitz')
       
     }),
     it('Test load Nilla vs Presor',()=>{
       const buffer = fs.readFileSync("test/Nilla_vs_Presor_Issue.rpl3");
       const data = GameParser.parseRaw(buffer);
 
-      expect(data.players[0].name).is.equal('#US Nilla')
-      expect(data.players[1].name).is.equal('#US MC Prestor John')
+      expect(data!.players[0].name).is.equal('#US Nilla')
+      expect(data!.players[1].name).is.equal('#US MC Prestor John')
       
   }),
     it('Test load AS vs VonPaulus_G2',()=>{
@@ -123,28 +127,23 @@ describe('Game Paser',()=>{
             result: { Duration: '1133', Victory: '5', Score: '0' }
           }
 
-          expect(data.result.duration).is.equal(Number(testObj.result.Duration))
-          expect(data.result.score).is.equal(Number(testObj.result.Score))
-          expect(data.result.victory).is.equal(Number(testObj.result.Victory))
+          expect(data!.result.duration).is.equal(Number(testObj.result.Duration))
+          expect(data!.result.score).is.equal(Number(testObj.result.Score))
+          expect(data!.result.victory).is.equal(Number(testObj.result.Victory))
 
-          expect(data.scoreLimit).is.equal(Number(testObj.game.ScoreLimit))
-          expect(data.timeLimit).is.equal(Number(testObj.game.TimeLimit))
-          expect(data.incomeRate).is.equal(Number(testObj.game.IncomeRate))
-          expect(data.gameMode).is.equal(Number(testObj.game.GameMode))
-          expect(data.initMoney).is.equal(Number(testObj.game.InitMoney))
-          expect(data.map_raw).is.equal(testObj.game.Map)
+          expect(data!.scoreLimit).is.equal(Number(testObj.game.ScoreLimit))
+          expect(data!.timeLimit).is.equal(Number(testObj.game.TimeLimit))
+          expect(data!.incomeRate).is.equal(Number(testObj.game.IncomeRate))
+          expect(data!.gameMode).is.equal(Number(testObj.game.GameMode))
+          expect(data!.initMoney).is.equal(Number(testObj.game.InitMoney))
+          expect(data!.map_raw).is.equal(testObj.game.Map)
 
-          expect(data.players[0].name).is.equal(testObj.player_1.PlayerName)
-          expect(data.players[1].name).is.equal(testObj.player_3.PlayerName)
+          expect(data!.players[0].name).is.equal(testObj.player_1.PlayerName)
+          expect(data!.players[1].name).is.equal(testObj.player_3.PlayerName)
 
-          expect(data.players[0].deck?.division).is.equal("4 Munte")
-          expect(data.players[1].deck?.division).is.equal("1. Skijäger")
+          expect(data!.players[0].deck?.division).is.equal("4 Munte")
+          expect(data!.players[1].deck?.division).is.equal("1. Skijäger")
 
-          fs.writeFileSync("output.txt",JSON.stringify(data))
-
-
-          
-
-
+          fs.writeFileSync("output.txt",JSON.stringify(data));
     })
 })
