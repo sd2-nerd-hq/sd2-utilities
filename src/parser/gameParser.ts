@@ -1,5 +1,6 @@
 //import { start } from 'node:repl';
-import { DeckData, DeckParser } from './deckParser'
+import {DeckData, DeckParser} from './deckParser'
+import {misc} from 'sd2-data'
 
 
 export class GameParser {
@@ -10,7 +11,6 @@ export class GameParser {
             //figure out junk length:
             //const junk = gameData.toString().split("{\"game\":")[0].length
             const junk = gameData.indexOf("{\"game\":")
-
 
 
             //ok... so in theory noone will name themselves "ingamePlayerId... so lets regex that line out and find the end of the line on it."
@@ -58,7 +58,6 @@ export class GameParser {
             }
 
 
-
             //build players and append them
             for (const key of Object.keys(startData)) {
                 if (key.startsWith("player")) {
@@ -71,6 +70,13 @@ export class GameParser {
                     p.elo = Number(pl.PlayerElo)
                     p.level = Number(pl.PlayerLevel)
                     p.name = String(pl.PlayerName)
+
+                    //check if there's an AI player and names it according to its diffuculty
+                    //propably not the most optimal way to check for Ai, maybe AICount?
+                    if (p.name === "" && p.aiLevel < 5) {
+                        p.name = "AI " + misc.aiLevel[p.aiLevel];
+                    }
+
                     p.alliance = Number(pl.PlayerAlliance)
                     if (pl.PlayerDeckContent)
                         p.deck = DeckParser.parse(pl.PlayerDeckContent)
@@ -80,8 +86,7 @@ export class GameParser {
                 }
             }
             return ret;
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e)
             return null;
         }
@@ -138,7 +143,7 @@ export class RawGameData {
     //DivisionTagFilter
     //AutoFillAI
     //DeltaTimeCheckAutoFillAI
-    result = { duration: 0, victory: 0, score: 0 }
+    result = {duration: 0, victory: 0, score: 0}
 }
 
 export class RawPlayer {

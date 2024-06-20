@@ -19,14 +19,15 @@ export class DeckParser {
 
     const div = divisions.divisionsById[deck.division] ? divisions.divisionsById[deck.division].name : "ERROR(" + deck.division + ")"
     //could be done better I think
-    const isWARNO = divisions.divisionsNato.some((div: { id: number }) => div.id === deck.division) || divisions.divisionsPact.some((div: { id: number }) => div.id === deck.division)
-    const faction = divisions.divisionsAxis.some((div: { id: number }) => div.id === deck.division) ? 0 : 1;
+    const isWARNO = divisions.divisionsNato.some((div: { id: number }) => div.id === deck.division) || divisions.divisionsPact.some((div: { id: number }) => div.id === deck.division);
 
-    deck.faction = faction;
+    const faction = isWARNO ? divisions.divisionsNato.some((div: { id: number }) => div.id === deck.division)
+      : divisions.divisionsAllies.some((div: { id: number }) => div.id === deck.division);
 
     const ret: DeckData = {
       raw: deck,
       franchise: isWARNO ? "WARNO" : "SD2",
+      faction: faction,
       income: income,
       division: div,
       units: []
@@ -85,7 +86,7 @@ export class DeckParser {
       units.push(unit);
     }
 
-    const result: DeckDataRaw = { code: "", division: header[2], cardCount: header[3], income: header[4], units: units, faction: 0 };
+    const result: DeckDataRaw = { code: "", division: header[2], cardCount: header[3], income: header[4], units: units };
 
     return result;
   }
@@ -96,7 +97,6 @@ export class DeckParser {
 declare type DeckDataRaw = {
   income: number;
   division: number;
-  faction: number;
   cardCount: number;
   units: UnitRaw[];
   code: string;
@@ -114,6 +114,7 @@ export declare type DeckData = {
   income: string;
   division: string;
   franchise: "WARNO" | "SD2";
+  faction: boolean; //false - axis, pact
   units: Unit[];
   raw: DeckDataRaw;
 }

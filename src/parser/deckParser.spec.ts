@@ -1,7 +1,7 @@
 import { DeckParser } from './deckParser';
 import { expect } from 'chai';
 
-describe('Deck Paser', () => {
+describe('Deck Parser', () => {
     it('Test Parse 97ya Deck Code', () => {
         const deck97ya = "DCTrzRBiEJiBUoACi14ACD8oACpj5jSqEoACqh4rTAn4ACIngACgn4ACgjbcKJtQgqoRpxyhyAAChroAELD4AEAbZxyIJYrSgR6OCEnIACIbRxyIZBjSJj5jSA/grSkNYACCxIACIRpx0DDoACA5orSIbIrSQfgACCqwACCrgACobZxzAbZxwA=="
         const data = DeckParser.parse(deck97ya);
