@@ -3,18 +3,25 @@ import * as fs from 'fs'
 import { expect } from 'chai';
 
 describe('Game Parser', () => {
-  it('Test load players ReeF vs Iwon', () => {
-    const buffer = fs.readFileSync("test/Reef_vs_Iwon.rpl3");
+  it('Test parse old replay', () => {
+    const buffer = fs.readFileSync("test/hellaOldReplay.rpl3");
     let data = GameParser.parseRaw(buffer);
 
-    expect(data).not.null;
-
     data = data as RawGameData;
-
-    expect(data.players[0].name).is.equal('[Duke] IwonTheInternet');
-    expect(data.players[1].name).is.equal('ReeF');
-
+    expect(data).not.null;
   }),
+    it('Test load players ReeF vs Iwon', () => {
+      const buffer = fs.readFileSync("test/Reef_vs_Iwon.rpl3");
+      let data = GameParser.parseRaw(buffer);
+
+      expect(data).not.null;
+
+      data = data as RawGameData;
+
+      expect(data.players[0].name).is.equal('[Duke] IwonTheInternet');
+      expect(data.players[1].name).is.equal('ReeF');
+
+    }),
     it('Test load divs ReeF vs Iwon', () => {
       const buffer = fs.readFileSync("test/Reef_vs_Iwon.rpl3");
       let data = GameParser.parseRaw(buffer);

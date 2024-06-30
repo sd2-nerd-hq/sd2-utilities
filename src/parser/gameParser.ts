@@ -1,25 +1,33 @@
 //import { start } from 'node:repl';
-import {DeckData, DeckParser} from './deckParser'
-import {misc} from 'sd2-data'
+import { DeckData, DeckParser } from './deckParser'
+import { misc } from 'sd2-data'
 
 
 export class GameParser {
     static parseRaw(gameData: Buffer): RawGameData | null {
 
         try {
-
+            console.log('startindParse');
             //figure out junk length:
             //const junk = gameData.toString().split("{\"game\":")[0].length
             const junk = gameData.indexOf("{\"game\":")
 
-
             //ok... so in theory noone will name themselves "ingamePlayerId... so lets regex that line out and find the end of the line on it."
-            const regex = /("ingamePlayerId":\d+})star/g
+            let regex = /("ingamePlayerId":\d+})star/g
             const d = gameData.slice((junk)).toString()
-            const matches = regex.exec(d)
-            let data = "Something Went Wrong"
-            if (matches)
-                data = d.split(matches[1])[0].trimStart() + matches[1]
+            let matches = regex.exec(d);
+
+            //old replays miss the ingamePlayerId
+            if (!matches) {
+                regex = /("PlayerIncomeRate":"\d"}})/g
+                matches = regex.exec(d);
+            }
+
+            if (!matches) {
+                return null;
+            }
+
+            const data = d.split(matches[1])[0].trimStart() + matches[1]
 
             const startData = JSON.parse(data);
             const endData = JSON.parse('{"result":' + gameData.toString().split(`{"result":`)[1]);
@@ -143,7 +151,7 @@ export class RawGameData {
     //DivisionTagFilter
     //AutoFillAI
     //DeltaTimeCheckAutoFillAI
-    result = {duration: 0, victory: 0, score: 0}
+    result = { duration: 0, victory: 0, score: 0 }
 }
 
 export class RawPlayer {
