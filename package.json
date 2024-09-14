@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/sd2-nerd-hq/sd2-utilities#readme",
   "dependencies": {
-    "sd2-data": "^0.8.3"
+    "sd2-data": "^0.8.9"
   },
   "devDependencies": {
     "@types/chai": "^4.2.15",
