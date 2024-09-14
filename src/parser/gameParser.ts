@@ -1,6 +1,6 @@
 //import { start } from 'node:repl';
-import { DeckData, DeckParser } from './deckParser'
-import { misc } from 'sd2-data'
+import {DeckData, DeckParser} from './deckParser'
+import {misc} from 'sd2-data'
 
 
 export class GameParser {
@@ -67,7 +67,6 @@ export class GameParser {
             }
 
 
-            const gameResult = ret.result.victory > 3 ? ret.ingamePlayerId >= ret.players.length / 2 : ret.ingamePlayerId < ret.players.length / 2;
 
             //build players and append them
             for (const key of Object.keys(startData)) {
@@ -95,11 +94,19 @@ export class GameParser {
                     p.incomeRate = Number(pl.PlayerIncomeRate)
 
 
-                    p.winner = gameResult ? p.alliance === 1 : p.alliance === 0;
 
 
                     ret.players.push(p)
                 }
+
+
+
+                const gameResult = ret.result.victory > 3 ? ret.ingamePlayerId >= ret.players.length / 2 : ret.ingamePlayerId < ret.players.length / 2;
+
+                for (const p of ret.players) {
+                    p.winner = gameResult ? p.alliance === 1 : p.alliance === 0;
+                }
+
             }
 
             ret.validForUpload = GameParser.isValidReplay(ret);
@@ -109,17 +116,18 @@ export class GameParser {
             return null;
         }
     }
+
     static getMapName(mapRaw: string): string {
 
         let map = '';
 
-        if(!mapRaw.includes('_')){
+        if (!mapRaw.includes('_')) {
             return mapRaw;
         }
 
         const arr = mapRaw.split('_');
 
-        if(arr.length < 3){
+        if (arr.length < 3) {
             return mapRaw;
         }
 
@@ -135,16 +143,16 @@ export class GameParser {
             counter++;
         }
 
-            const exception = misc.mapExceptions[map];
+        const exception = misc.mapExceptions[map];
 
-            map = exception ? exception : map;
+        map = exception ? exception : map;
 
-            map = map.replace(/([A-Z])/g, ' $1').trim();
+        map = map.replace(/([A-Z])/g, ' $1').trim();
 
 
         const match = mapRaw.match(/([0-9])vs([0-9])/) ?? mapRaw.match(/([0-9])v([0-9])/);
 
-        if(match !== null && match[0] !== '1vs1' && match[0] !== '1v1'){
+        if (match !== null && match[0] !== '1vs1' && match[0] !== '1v1') {
 
 
             let mapType = match[0].replace('vs', 'v');
@@ -228,7 +236,7 @@ export class RawGameData {
     //DivisionTagFilter
     //AutoFillAI
     //DeltaTimeCheckAutoFillAI
-    result = { duration: 0, victory: 0, score: 0 }
+    result = {duration: 0, victory: 0, score: 0}
 }
 
 export class RawPlayer {
