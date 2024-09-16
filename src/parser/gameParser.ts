@@ -6,7 +6,6 @@ import {misc} from 'sd2-data'
 export class GameParser {
     static parseRaw(input: Buffer | ArrayBuffer): RawGameData | null {
 
-
         if(input instanceof ArrayBuffer){
             input = Buffer.from(input);
         }
