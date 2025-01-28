@@ -17,7 +17,7 @@ export class DeckParser {
 
     // let div: number = divisions.divisionsById[deck.division];
 
-    const div = divisions.divisionsById[deck.division] ? divisions.divisionsById[deck.division].name : "ERROR(" + deck.division + ")"
+    const div = divisions.divisionsById[deck.division] ? divisions.divisionsById[deck.division].name : "Unknown(" + deck.division + ")"
     //could be done better I think
     const isWARNO = divisions.divisionsNato.some((div: { id: number }) => div.id === deck.division) || divisions.divisionsPact.some((div: { id: number }) => div.id === deck.division);
 

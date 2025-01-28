@@ -171,6 +171,19 @@ describe('Game Parser', () => {
 
             fs.writeFileSync("output.txt", JSON.stringify(data));
         }),
+
+        it('print Data', () => {
+
+            const buffer = fs.readFileSync("test/Reef_vs_Iwon.rpl3");
+            let data = GameParser.parseRaw(buffer);
+
+            expect(data).not.null;
+
+            data = data as RawGameData;
+
+            console.log(data);
+
+        }),
         it('Test map names', () => {
             expect(GameParser.getMapName('_3x2_Tali_Ihantala_LD_1v1_CQC')).is.equal('Tali Ihantala');
 
@@ -189,7 +202,5 @@ describe('Game Parser', () => {
             expect(GameParser.getMapName('_3x3_IFleuve')).is.equal('Mount River');
 
             expect(GameParser.getMapName('_2x2_Plateau_Central_Orsha_E_LD_1v1')).is.equal('Orsha East');
-
-
         });
 })
