@@ -12,21 +12,20 @@ export class DeckParser {
     deck.code = code;
     return deck;
   }
-  static makePretty(deck: DeckDataRaw): DeckData {
+  static makePretty(deck: DeckDataRaw, franchise: "SD2" | "WARNO"): DeckData {
     const income = misc.incomeTypes[deck.income] || "ERROR(" + deck.income + ")"
 
     // let div: number = divisions.divisionsById[deck.division];
 
     const div = divisions.divisionsById[deck.division] ? divisions.divisionsById[deck.division].name : "Unknown(" + deck.division + ")"
     //could be done better I think
-    const isWARNO = divisions.divisionsNato.some((div: { id: number }) => div.id === deck.division) || divisions.divisionsPact.some((div: { id: number }) => div.id === deck.division);
 
-    const faction = isWARNO ? divisions.divisionsNato.some((div: { id: number }) => div.id === deck.division)
+    //find the divs faction
+    const faction = franchise == "WARNO" ? divisions.divisionsNato.some((div: { id: number }) => div.id === deck.division)
       : divisions.divisionsAllies.some((div: { id: number }) => div.id === deck.division);
 
     const ret: DeckData = {
       raw: deck,
-      franchise: isWARNO ? "WARNO" : "SD2",
       faction: faction,
       income: income,
       division: div,
@@ -35,8 +34,8 @@ export class DeckParser {
     for (const unit of deck.units) {
       const u = units.unitsById[unit.id]?.name || "ERROR(" + unit.id + ")"
       let t = "None"
-      if (unit.transportid != -1)
-        t = units.unitsById[unit.transportid]?.name || "ERROR(" + unit.xp + ")"
+      if (unit.transportId != -1)
+        t = units.unitsById[unit.transportId]?.name || "ERROR(" + unit.xp + ")"
       const punit: Unit = {
         xp: unit.xp,
         phase: unit.phase,
@@ -50,8 +49,8 @@ export class DeckParser {
     return ret;
   }
 
-  static parse(code: string): DeckData {
-    return DeckParser.makePretty(DeckParser.parseRaw(code));
+  static deckParse(code: string, franchise: "SD2" | "WARNO" = "SD2"): DeckData {
+    return DeckParser.makePretty(DeckParser.parseRaw(code), franchise);
   }
 
   private static getHeader(binData: string): DeckDataRaw {
@@ -82,7 +81,7 @@ export class DeckParser {
       const transportid = pop(unitLen) - 1;
 
 
-      const unit: UnitRaw = { count: count, phase: phase, xp: xp, id: id, transportid: transportid }
+      const unit: UnitRaw = { count: count, phase: phase, xp: xp, id: id, transportId: transportid }
       units.push(unit);
     }
 
@@ -104,7 +103,7 @@ declare type DeckDataRaw = {
 
 declare type UnitRaw = {
   id: number;
-  transportid: number;
+  transportId: number;
   xp: number;
   phase: number;
   count: number;
@@ -113,7 +112,6 @@ declare type UnitRaw = {
 export declare type DeckData = {
   income: string;
   division: string;
-  franchise: "WARNO" | "SD2";
   faction: boolean; //false - axis, pact
   units: Unit[];
   raw: DeckDataRaw;

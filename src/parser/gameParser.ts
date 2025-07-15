@@ -1,12 +1,12 @@
 //import { start } from 'node:repl';
-import {DeckData, DeckParser} from './deckParser'
-import {misc} from 'sd2-data'
+import { DeckData, DeckParser } from './deckParser'
+import { misc } from 'sd2-data'
 
 
 export class GameParser {
     static parseRaw(input: Buffer | ArrayBuffer): RawGameData | null {
 
-        if(input instanceof ArrayBuffer){
+        if (input instanceof ArrayBuffer) {
             input = Buffer.from(input);
         }
 
@@ -16,11 +16,11 @@ export class GameParser {
 
             //figure out junk length:
             //const junk = gameData.toString().split("{\"game\":")[0].length
-            const junk = gameData.indexOf("{\"game\":")
+            const junk = gameData.indexOf("{\"game\":");
 
             //ok... so in theory noone will name themselves "ingamePlayerId... so lets regex that line out and find the end of the line on it."
-            let regex = /("ingamePlayerId":\d+})star/g
-            const d = gameData.slice((junk)).toString()
+            let regex = /("ingamePlayerId":\d+})star/g;
+            const d = gameData.slice((junk)).toString();
             let matches = regex.exec(d);
 
             //some (old?) replays miss the ingamePlayerId
@@ -33,7 +33,7 @@ export class GameParser {
                 return null;
             }
 
-            const data = d.split(matches[1])[0].trimStart() + matches[1]
+            const data = d.split(matches[1])[0].trimStart() + matches[1];
 
             const startData = JSON.parse(data);
             const endData = JSON.parse('{"result":' + gameData.toString().split(`{"result":`)[1]);
@@ -42,50 +42,52 @@ export class GameParser {
             //clean and make return
             const ret = new RawGameData();
 
-            ret.gameMode = Number(startData.game.GameMode)
-            ret.isNetworkMode = Boolean(startData.game.IsNetworkMode)
-            ret.maxPlayers = Number(startData.game.NbMaxPlayer)
-            ret.playerCount = Number(startData.game.NbPlayersAndIA)
-            ret.allowObservers = Boolean(startData.game.AllowObservers)
-            ret.observerDelay = Number(startData.ObserverDelay)
-            ret.seed = Number(startData.game.Seed)
-            ret.isPrivate = Boolean(startData.game.Private)
-            ret.serverName = String(startData.game.ServerName)
-            ret.withHost = Boolean(startData.game.WithHost)
-            ret.serverProtocol = String(startData.game.ServerProtocol)
-            ret.version = Number(startData.game.Version)
-            ret.aiCount = Number(startData.game.NbIA)
-            ret.tickRate = Number(startData.game.TickRate)
-            ret.uniqueSessionId = String(startData.game.UniqueSessionId)
-            ret.gameType = Number(startData.game.GameType)
-            ret.mapRaw = String(startData.game.Map)
+            ret.gameMode = Number(startData.game.GameMode);
+            ret.isNetworkMode = Boolean(startData.game.IsNetworkMode);
+            ret.maxPlayers = Number(startData.game.NbMaxPlayer);
+            ret.playerCount = Number(startData.game.NbPlayersAndIA);
+            ret.allowObservers = Boolean(startData.game.AllowObservers);
+            ret.observerDelay = Number(startData.ObserverDelay);
+            ret.seed = Number(startData.game.Seed);
+            ret.isPrivate = Boolean(startData.game.Private);
+            ret.serverName = String(startData.game.ServerName);
+            ret.withHost = Boolean(startData.game.WithHost);
+            ret.serverProtocol = String(startData.game.ServerProtocol);
+            ret.version = Number(startData.game.Version);
+            ret.aiCount = Number(startData.game.NbIA);
+            ret.tickRate = Number(startData.game.TickRate);
+            ret.uniqueSessionId = String(startData.game.UniqueSessionId);
+            ret.gameType = Number(startData.game.GameType);
+            ret.mapRaw = String(startData.game.Map);
             ret.mapName = GameParser.getMapName(ret.mapRaw);
-            ret.initMoney = Number(startData.game.InitMoney)
-            ret.timeLimit = Number(startData.game.TimeLimit)
-            ret.scoreLimit = Number(startData.game.ScoreLimit)
-            ret.victoryCondition = Number(startData.game.VictoryCond)
-            ret.incomeRate = Number(startData.game.IncomeRate)
-            ret.ingamePlayerId = Number(startData.ingamePlayerId)
+            ret.initMoney = Number(startData.game.InitMoney);
+            ret.timeLimit = Number(startData.game.TimeLimit);
+            ret.scoreLimit = Number(startData.game.ScoreLimit);
+            ret.victoryCondition = Number(startData.game.VictoryCond);
+            ret.incomeRate = Number(startData.game.IncomeRate);
+            ret.ingamePlayerId = Number(startData.ingamePlayerId);
             ret.result = {
                 duration: Number(startData.result.Duration),
                 victory: Number(startData.result.Victory),
                 score: Number(startData.result.Score)
             }
 
-
+            if(ret.victoryCondition === null || Number.isNaN(ret.victoryCondition)){
+                ret.franchise = "WARNO";
+            }
 
             //build players and append them
             for (const key of Object.keys(startData)) {
                 if (key.startsWith("player")) {
-                    const p = new RawPlayer()
-                    const pl = startData[key]
-                    p.mapPos = key
-                    p.aiLevel = Number(pl.PlayerIALevel)
-                    p.id = Number(pl.PlayerUserId)
-                    p.isObserver = Boolean(pl.PlayerOberver)
-                    p.elo = Number(pl.PlayerElo)
-                    p.level = Number(pl.PlayerLevel)
-                    p.name = String(pl.PlayerName)
+                    const p = new RawPlayer();
+                    const pl = startData[key];
+                    p.mapPos = key;
+                    p.aiLevel = Number(pl.PlayerIALevel);
+                    p.id = Number(pl.PlayerUserId);
+                    p.isObserver = Boolean(pl.PlayerOberver);
+                    p.elo = Number(pl.PlayerElo);
+                    p.level = Number(pl.PlayerLevel);
+                    p.name = String(pl.PlayerName);
 
                     //check if there's an AI player and names it according to its diffuculty
                     //propably not the most optimal way to check for Ai, maybe AICount?
@@ -93,14 +95,11 @@ export class GameParser {
                         p.name = "AI " + misc.aiLevel[p.aiLevel];
                     }
 
-                    p.alliance = Number(pl.PlayerAlliance)
+                    p.alliance = Number(pl.PlayerAlliance);
                     if (pl.PlayerDeckContent)
-                        p.deck = DeckParser.parse(pl.PlayerDeckContent)
-                    p.scoreLimit = Number(pl.PlayerScoreLimit)
-                    p.incomeRate = Number(pl.PlayerIncomeRate)
-
-
-
+                        p.deck = DeckParser.deckParse(pl.PlayerDeckContent, ret.franchise);
+                    p.scoreLimit = Number(pl.PlayerScoreLimit);
+                    p.incomeRate = Number(pl.PlayerIncomeRate);
 
                     ret.players.push(p)
                 }
@@ -115,7 +114,8 @@ export class GameParser {
 
             }
 
-            ret.validForUpload = GameParser.isValidReplay(ret);
+            ret.invalidForUpload = GameParser.isValidReplay(ret);
+
             return ret;
         } catch (e) {
             console.log(e)
@@ -177,15 +177,15 @@ export class GameParser {
     }
 
     static isValidReplay(g: RawGameData): string[] | null {
-        const isValid = [];
+        const invalid = [];
 
-        if (g.aiCount > 0) isValid.push("aiCount");
-        if (g.gameMode != 1) isValid.push("gameMode");
-        if (g.incomeRate != 3 && g.players.length == 2) isValid.push("incomeRate"); //don't accept other for 1v1s
-        if (g.scoreLimit != 2000) isValid.push("scoreLimit");
-        if (g.playerCount === 1) isValid.push("playerCount");
+        if (g.aiCount > 0) invalid.push("aiCount");
+        if (g.gameMode != 1) invalid.push("gameMode");
+        if (g.incomeRate != 3 && g.players.length == 2) invalid.push("incomeRate"); //don't accept other for 1v1s
+        if (g.scoreLimit != 2000) invalid.push("scoreLimit");
+        if (g.playerCount === 1) invalid.push("playerCount");
 
-        return isValid.length > 0 ? isValid : null;
+        return invalid.length > 0 ? invalid : null;
     }
 
 }
@@ -195,7 +195,7 @@ export class GameParser {
 export class RawGameData {
     gameMode = -1;
     isNetworkMode = false;
-    validForUpload: string[] | null = null;
+    invalidForUpload: string[] | null = null;
     maxPlayers = 0;
     playerCount = 0;
     allowObservers = false;
@@ -217,6 +217,7 @@ export class RawGameData {
     scoreLimit = 0;
     victoryCondition = 0;
     incomeRate = 0;
+    franchise: "SD2" | "WARNO" = "SD2";
     players: RawPlayer[] = [];
     ingamePlayerId = 0;
     //TimeLeft
@@ -242,7 +243,7 @@ export class RawGameData {
     //DivisionTagFilter
     //AutoFillAI
     //DeltaTimeCheckAutoFillAI
-    result = {duration: 0, victory: 0, score: 0}
+    result = { duration: 0, victory: 0, score: 0 }
 }
 
 export class RawPlayer {
