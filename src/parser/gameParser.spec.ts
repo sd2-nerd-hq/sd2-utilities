@@ -1,6 +1,6 @@
-import {GameParser, RawGameData} from './gameParser';
+import { GameParser, RawGameData } from './gameParser';
 import * as fs from 'fs'
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 describe('Game Parser', () => {
     it('Test parse oldest replay', () => {
@@ -152,10 +152,8 @@ describe('Game Parser', () => {
                     PlayerIncomeRate: '1'
                 },
                 ingamePlayerId: 0,
-                result: {Duration: '1133', Victory: '5', Score: '0'}
+                result: { Duration: '1133', Victory: '5', Score: '0' }
             }
-
-            console.log('MAAAAAAAAAP:', data!.mapName);
 
             expect(data!.result.duration).is.equal(Number(testObj.result.Duration))
             expect(data!.result.score).is.equal(Number(testObj.result.Score))
@@ -168,22 +166,8 @@ describe('Game Parser', () => {
             expect(data!.initMoney).is.equal(Number(testObj.game.InitMoney))
             expect(data!.mapRaw).is.equal(testObj.game.Map)
             expect(data!.mapName).is.equal('Sianno')
-
-            fs.writeFileSync("output.txt", JSON.stringify(data));
         }),
 
-        it('print Data', () => {
-
-            const buffer = fs.readFileSync("test/Reef_vs_Iwon.rpl3");
-            let data = GameParser.parseRaw(buffer);
-
-            expect(data).not.null;
-
-            data = data as RawGameData;
-
-            console.log(data);
-
-        }),
         it('Test map names', () => {
             expect(GameParser.getMapName('_3x2_Tali_Ihantala_LD_1v1_CQC')).is.equal('Tali Ihantala');
 
@@ -202,5 +186,7 @@ describe('Game Parser', () => {
             expect(GameParser.getMapName('_3x3_IFleuve')).is.equal('Mount River');
 
             expect(GameParser.getMapName('_2x2_Plateau_Central_Orsha_E_LD_1v1')).is.equal('Orsha East');
+
+            expect(GameParser.getMapName('_2x3_Two_lakes_1vs1_CONQ_DUEL')).is.equal('Two Lakes');
         });
 })

@@ -72,7 +72,7 @@ export class GameParser {
                 score: Number(startData.result.Score)
             }
 
-            if(ret.victoryCondition === null || Number.isNaN(ret.victoryCondition)){
+            if (ret.victoryCondition === null || Number.isNaN(ret.victoryCondition)) {
                 ret.franchise = "WARNO";
             }
 
@@ -123,6 +123,7 @@ export class GameParser {
         }
     }
 
+    //tries to guess the map name from Eugen's full name
     static getMapName(mapRaw: string): string {
 
         let map = '';
@@ -137,7 +138,8 @@ export class GameParser {
             return mapRaw;
         }
 
-        map = arr[2];
+        map = arr[2][0].toUpperCase() + arr[2].substring(1);
+
         let counter = 3;
         while (counter < arr.length && isNaN(parseInt(arr[counter][0]))) {
 
@@ -145,7 +147,7 @@ export class GameParser {
                 break;
             }
 
-            map += arr[counter];
+            map += arr[counter][0].toUpperCase() + arr[counter].substring(1);
             counter++;
         }
 
@@ -155,11 +157,9 @@ export class GameParser {
 
         map = map.replace(/([A-Z])/g, ' $1').trim();
 
-
         const match = mapRaw.match(/([0-9])vs([0-9])/) ?? mapRaw.match(/([0-9])v([0-9])/);
 
         if (match !== null && match[0] !== '1vs1' && match[0] !== '1v1') {
-
 
             let mapType = match[0].replace('vs', 'v');
 
@@ -170,7 +170,6 @@ export class GameParser {
             const firstChar = map[0].toUpperCase();
 
             map = firstChar + map.slice(1);
-
         }
 
         return map;
