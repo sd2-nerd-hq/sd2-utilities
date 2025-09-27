@@ -1,6 +1,6 @@
 {
   "name": "sd2-utilities",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Utilities for SD2",
   "main": "lib/main.js",
   "types": "lib",
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/sd2-nerd-hq/sd2-utilities#readme",
   "dependencies": {
-    "sd2-data": "^0.8.17"
+    "sd2-data": "^0.8.18"
   },
   "devDependencies": {
     "@types/chai": "^4.2.15",
