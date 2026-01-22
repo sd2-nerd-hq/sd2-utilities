@@ -59,7 +59,9 @@ export class GameParser {
             ret.uniqueSessionId = String(startData.game.UniqueSessionId);
             ret.gameType = Number(startData.game.GameType);
             ret.mapRaw = String(startData.game.Map);
-            ret.mapName = GameParser.getMapName(ret.mapRaw);
+            const mapInfo = GameParser.getMapName(ret.mapRaw);
+            ret.mapName = mapInfo.mapName;
+            ret.mapType = mapInfo.mapType;
             ret.initMoney = Number(startData.game.InitMoney);
             ret.timeLimit = Number(startData.game.TimeLimit);
             ret.scoreLimit = Number(startData.game.ScoreLimit);
@@ -124,18 +126,18 @@ export class GameParser {
     }
 
     //tries to guess the map name from Eugen's full name
-    static getMapName(mapRaw: string): string {
+    static getMapName(mapRaw: string): { mapName: string, mapType: string | null } {
 
         let map = '';
 
         if (!mapRaw.includes('_')) {
-            return mapRaw;
+            return { mapName: mapRaw, mapType: null };
         }
 
         const arr = mapRaw.split('_');
 
         if (arr.length < 3) {
-            return mapRaw;
+            return { mapName: mapRaw, mapType: null };
         }
 
         map = arr[2][0].toUpperCase() + arr[2].substring(1);
@@ -159,20 +161,19 @@ export class GameParser {
 
         const match = mapRaw.match(/([0-9])vs([0-9])/) ?? mapRaw.match(/([0-9])v([0-9])/);
 
-        if (match !== null && match[0] !== '1vs1' && match[0] !== '1v1') {
-
+        if (match !== null) {
             let mapType = match[0].replace('vs', 'v');
 
             mapType = mapType === '0v1' ? '10v10' : mapType;
 
-            map += ' ' + mapType;
-
             const firstChar = map[0].toUpperCase();
 
             map = firstChar + map.slice(1);
+
+            return {mapName: map, mapType: mapType};
         }
 
-        return map;
+        return { mapName: map, mapType: null };
     }
 
     static isValidReplay(g: RawGameData): string[] | null {
@@ -211,6 +212,7 @@ export class RawGameData {
     gameType = -1;
     mapRaw = "";
     mapName = "";
+    mapType: string | null = null;
     initMoney = 0;
     timeLimit = 0;
     scoreLimit = 0;

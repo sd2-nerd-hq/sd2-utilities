@@ -168,25 +168,51 @@ describe('Game Parser', () => {
             expect(data!.mapName).is.equal('Sianno')
         }),
 
-        it('Test map names', () => {
-            expect(GameParser.getMapName('_3x2_Tali_Ihantala_LD_1v1_CQC')).is.equal('Tali Ihantala');
+        it('Test getMapName', () => {
+            let mapInfo;
 
-            expect(GameParser.getMapName('_3x2_Slutsk_LD_3v3_CQC')).is.equal('Slutsk 3v3');
+            mapInfo = GameParser.getMapName('_3x2_Tali_Ihantala_LD_1v1_CQC');
+            expect(mapInfo.mapName).is.equal('Tali Ihantala');
+            expect(mapInfo.mapType).is.equal('1v1');
 
-            expect(GameParser.getMapName('_3x3_MountRiver_1vs1')).is.equal('Mount River');
+            mapInfo = GameParser.getMapName('_3x2_Slutsk_LD_3v3_CQC');
+            expect(mapInfo.mapName).is.equal('Slutsk');
+            expect(mapInfo.mapType).is.equal('3v3');
 
-            expect(GameParser.getMapName('_2x3_Vertigo_1vs1_CONQ_DUEL')).is.equal('Vertigo');
+            mapInfo = GameParser.getMapName('_3x3_MountRiver_1vs1');
+            expect(mapInfo.mapName).is.equal('Mount River');
+            expect(mapInfo.mapType).is.equal('1v1');
 
-            expect(GameParser.getMapName('_5x2_Loop_2vs2_CONQ_DUEL')).is.equal('Loop 2v2');
+            mapInfo = GameParser.getMapName('_2x3_Vertigo_1vs1_CONQ_DUEL');
+            expect(mapInfo.mapName).is.equal('Vertigo');
+            expect(mapInfo.mapType).is.equal('1v1');
 
-            expect(GameParser.getMapName('_4x3_geisa_10vs10_DEST')).is.equal('Geisa 10v10');
+            mapInfo = GameParser.getMapName('_5x2_Loop_2vs2_CONQ_DUEL');
+            expect(mapInfo.mapName).is.equal('Loop');
+            expect(mapInfo.mapType).is.equal('2v2');
 
-            expect(GameParser.getMapName('_2x3_zigzag_2vs2_DEST')).is.equal('Vertigo 2v2');
+            mapInfo = GameParser.getMapName('_4x3_geisa_10vs10_DEST');
+            expect(mapInfo.mapName).is.equal('Geisa');
+            expect(mapInfo.mapType).is.equal('10v10');
 
-            expect(GameParser.getMapName('_3x3_IFleuve')).is.equal('Mount River');
+            mapInfo = GameParser.getMapName('_2x3_zigzag_2vs2_DEST');
+            expect(mapInfo.mapName).is.equal('Vertigo'); // Note: ZigZag usually maps to Vertigo in some parsers
+            expect(mapInfo.mapType).is.equal('2v2');
 
-            expect(GameParser.getMapName('_2x2_Plateau_Central_Orsha_E_LD_1v1')).is.equal('Orsha East');
+            mapInfo = GameParser.getMapName('_3x3_IFleuve');
+            expect(mapInfo.mapName).is.equal('Mount River');
+            expect(mapInfo.mapType).is.equal(null);
 
-            expect(GameParser.getMapName('_2x3_Two_lakes_1vs1_CONQ_DUEL')).is.equal('Two Lakes');
+            mapInfo = GameParser.getMapName('_2x2_Plateau_Central_Orsha_E_LD_1v1');
+            expect(mapInfo.mapName).is.equal('Orsha East');
+            expect(mapInfo.mapType).is.equal('1v1');
+
+            mapInfo = GameParser.getMapName('_2x3_Two_lakes_1vs1_CONQ_DUEL');
+            expect(mapInfo.mapName).is.equal('Two Lakes');
+            expect(mapInfo.mapType).is.equal('1v1');
+
+            mapInfo = GameParser.getMapName('_3x3_Eiche_2vs2_CONQ');
+            expect(mapInfo.mapName).is.equal('Eiche');
+            expect(mapInfo.mapType).is.equal('2v2');
         });
 })
