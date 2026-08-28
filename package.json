@@ -1,6 +1,6 @@
 {
   "name": "sd2-utilities",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Utilities for SD2",
   "main": "lib/main.js",
   "types": "lib",
@@ -29,8 +29,8 @@
     "@typescript-eslint/parser": "^4.20.0",
     "chai": "^4.3.4",
     "eslint": "^7.23.0",
-    "mocha": "^8.3.2",
-    "ts-node": "^9.1.1",
+    "mocha": "^11.8.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   },
   "files": [
